@@ -175,36 +175,29 @@ int main() {
     Image layer_green = readImage("input/layer_green.tga");
     Image layer_red = readImage("input/layer_red.tga");
 
-    // Part 1: Multiply layer1 with pattern1
     Image part1 = multiply(layer1, pattern1);
     writeImage(part1, "output/part1.tga");
 
-    // Part 2: Subtract layer2 from car
     Image part2 = subtract(car, layer2);
     writeImage(part2, "output/part2.tga");
 
-    // Part 3: Screen text with multiplied layer1 and pattern2
     Image multiplied = multiply(layer1, pattern2);
     Image part3 = screen(multiplied, text);
     writeImage(part3, "output/part3.tga");
 
-    // Part 4: Multiply layer2 with circles then subtract pattern2
     Image multiplied2 = multiply(layer2, circles);
     Image part4 = subtract(multiplied2, pattern2);
     writeImage(part4, "output/part4.tga");
 
-    // Part 5: Overlay layer1 with pattern1
     Image part5 = overlay(layer1, pattern1);
     writeImage(part5, "output/part5.tga");
 
-    // Part 6: Add 200 to green channel of car (clamped to 255)
     Image part6 = car;
     for (int i = 0; i < part6.pixels.size(); i++) {
         part6.pixels[i].G = min(255, part6.pixels[i].G + 200);
     }
     writeImage(part6, "output/part6.tga");
 
-    // Part 7: Scale red by 4 and zero blue in car image
     Image part7 = car;
     for (int i = 0; i < part7.pixels.size(); i++) {
         part7.pixels[i].R = min(255, part7.pixels[i].R * 4);
@@ -212,7 +205,6 @@ int main() {
     }
     writeImage(part7, "output/part7.tga");
 
-    // Part 8: Separate car into individual color channels
     Image part8_b, part8_g, part8_r;
     part8_b.header = part8_g.header = part8_r.header = car.header;
     for (int i = 0; i < car.pixels.size(); i++) {
@@ -227,7 +219,6 @@ int main() {
     writeImage(part8_g, "output/part8_g.tga");
     writeImage(part8_r, "output/part8_r.tga");
 
-    // Part 9: Combine color layers
     Image part9;
     part9.header = layer_blue.header;
     for (int i = 0; i < layer_blue.pixels.size(); i++) {
@@ -236,7 +227,6 @@ int main() {
     }
     writeImage(part9, "output/part9.tga");
 
-    // Part 10: Flip text2 vertically
     reverse(text2.pixels.begin(), text2.pixels.end());
     writeImage(text2, "output/part10.tga");
 
