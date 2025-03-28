@@ -3,6 +3,9 @@
 Image ReadTGA(std::string file) {
     std::ifstream infile("input/" + file + ".tga", std::ios::binary);
 
+    if (!infile) {
+        std::cout << "ERROR INFILE" << std::endl;
+    }
 
     char headerIdLength;
     char headerColorMapType;
@@ -146,4 +149,43 @@ Image screen(Image img1, Image img2) {
     }
 
     return Image(img1.header, imagePixels);
+}
+Image overlay(Image img1, Image img2) {
+    std::vector<Pixel> pixels;
+    for (int i = 0; i < img1.pixelData.size(); i++) {
+        unsigned char blue, green, red;
+        
+        if (img2.pixelData[i].BLUE / 255.0f <= 0.5) {
+            blue = static_cast<unsigned char>(
+                2 * (img1.pixelData[i].BLUE / 255.0f) * (img2.pixelData[i].BLUE / 255.0f) * 255.0f + 0.5f
+            );
+        } else {
+            blue = static_cast<unsigned char>(
+                (1 - (2 * (1 - img1.pixelData[i].BLUE / 255.0f) * (1 - img2.pixelData[i].BLUE / 255.0f))) * 255.0f + 0.5f
+            );
+        }
+
+        if (img2.pixelData[i].GREEN / 255.0f <= 0.5) {
+            green = static_cast<unsigned char>(
+                2 * (img1.pixelData[i].GREEN / 255.0f) * (img2.pixelData[i].GREEN / 255.0f) * 255.0f + 0.5f
+            );
+        } else {
+            green = static_cast<unsigned char>(
+                (1 - (2 * (1 - img1.pixelData[i].GREEN / 255.0f) * (1 - img2.pixelData[i].GREEN / 255.0f))) * 255.0f + 0.5f
+            );
+        }
+
+        if (img2.pixelData[i].RED / 255.0f <= 0.5) {
+            red = static_cast<unsigned char>(
+                2 * (img1.pixelData[i].RED / 255.0f) * (img2.pixelData[i].RED / 255.0f) * 255.0f + 0.5f
+            );
+        } else {
+            red = static_cast<unsigned char>(
+                (1 - (2 * (1 - img1.pixelData[i].RED / 255.0f) * (1 - img2.pixelData[i].RED / 255.0f))) * 255.0f + 0.5f
+            );
+        }
+
+        pixels.push_back(Pixel(blue, green, red));
+    }
+    return Image(img1.header, pixels);
 }
