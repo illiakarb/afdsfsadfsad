@@ -3,9 +3,6 @@
 Image ReadTGA(std::string file) {
     std::ifstream infile("input/" + file + ".tga", std::ios::binary);
 
-    if (!infile) {
-        std::cout << "ERROR INFILE" << std::endl;
-    }
 
     char headerIdLength;
     char headerColorMapType;
